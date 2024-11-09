@@ -6,8 +6,8 @@ import Footer from "./Components/Footer";
 // import About from "./Pages/About";
 // import Articles from "./Pages/Articles";
 // import Detection from "./Pages/Detection"
-// import Overalltest from "./Pages/Overalltest";
-// import Coursetest from "./Pages/Coursetest";
+import Overalltest from "./Pages/Overalltest";
+import Coursetest from "./Pages/Coursetest";
 
 export default function App() {
   return (
@@ -16,11 +16,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/learning" element={<Learning />} />
+        <Route path="/overall" element={<Overalltest />} />
+        <Route path="/course/:article" element={<Coursetest />} />
         {/* <Route path="/about" element={<About />} />
         <Route path="/articles" element={<Articles />} />
-        <Route path="/detect/:number" element={<Detection />} />
-        <Route path="/overall" element={<Overalltest />} />
-        <Route path="/course/:article" element={<Coursetest />} /> */}
+        <Route path="/detect/:number" element={<Detection />} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -3,45 +3,46 @@ import RecordButton from "../Components/RecordButton";
 import Mic from "../Components/Mic";
 import NavButton from "../Components/NavButton";
 import RecordingLoader from "../Components/RecordingLoader";
+import { useNavigate, useParams } from "react-router-dom";
+import { saveArticle, getSavedArticle } from "../utils/articleUtils"; // Import utility functions
+import { saveData } from "../utils/Phenome";
 
 const baseUrl = "http://localhost:5000";
 
-const Overalltest = () => {
-  let [letter, setLetter] = useState("A");
+const Overalltest = ({ articleProp }) => {
+  const navigate = useNavigate();
+  const { article } = useParams();
+  const articleName = article || articleProp || getSavedArticle(); // Use saved article or fallback
+
+  let [letter, setLetter] = useState("B");
   let [attempts, setAttempts] = useState([]);
-  let [word, setWord] = useState("Apple");
-  let [pronounciation, setPronounciation] = useState("/appel/");
-  let [averageAccuracy, setAverageAccuracy] = useState(0);
+  let [word, setWord] = useState("");
+  let [pronounciation, setPronounciation] = useState("");
+  let averageAccuracy = 0;
   let [image, setImage] = useState("");
   let [recording, setRecording] = useState(false);
 
+  const improvisationNeeded = () => {
+    let average = Math.round(averageAccuracy / attempts.length);
+    navigate("/detect/" + average);
+  };
+
   useEffect(() => {
     async function letterCall() {
-      setAttempts([]);
-      setAverageAccuracy(0);
-      let url = baseUrl + "/test/" + letter;
+      let url = `${baseUrl}/generate_word/${articleName}`;
       const res = await fetch(url);
       const data = await res.json();
       setImage(data.image_link);
       setWord(data.word1);
       setPronounciation(data.pronunciation);
+      saveData(article, data.word1);
     }
 
     letterCall();
-  }, [letter]);
+    saveArticle(articleName);
 
-  useEffect(() => {
-    let average = 0;
-    for (let i = 0; i < attempts.length; i++) {
-      average += attempts[i];
-    }
-
-    if (average == 0) {
-      setAverageAccuracy(0);
-    } else {
-      setAverageAccuracy((average / attempts.length).toFixed(2));
-    }
-  }, [attempts]);
+    // Save the article whenever it's fetched or changed
+  }, [letter, articleName]);
 
   const nextLetter = () => {
     setLetter((prevLetter) => {
@@ -77,9 +78,13 @@ const Overalltest = () => {
     setRecording(false);
   };
 
+  for (let i = 0; i < attempts.length; i++) {
+    averageAccuracy += attempts[i];
+  }
+
   return (
     <div className="md:px-[9rem] pb-[4rem] font-spacegroteskmedium">
-      <div className="text-md font-semibold mb-6">Letter : {letter}</div>
+      <div className="text-md font-semibold mb-6">Letter : {articleName}</div>
 
       <div className="flex justify-between text-md font-semibold mb-5">
         <span className="">
@@ -87,16 +92,19 @@ const Overalltest = () => {
         </span>
         <span className="me-[4rem]">
           Average Correct Percentage -{" "}
-          {attempts.length != 0 ? averageAccuracy : averageAccuracy} %
+          {attempts.length != 0
+            ? (averageAccuracy / attempts.length).toFixed(2)
+            : averageAccuracy}{" "}
+          %
         </span>
       </div>
 
       <center className="text-2xl">
         <div className="mb-1">{word}</div>
         <div className="mb-8">{pronounciation}</div>
-        {image.length != 0 ? (
+        {/* {image.length != 0 ? (
           <img src={image} className="h-[12rem] my-8 rounded-xl" />
-        ) : null}
+        ) : null} */}
         {!recording ? <Mic /> : <RecordingLoader />}
       </center>
 
@@ -176,7 +184,7 @@ const Overalltest = () => {
         </div>
       </div>
 
-      <div className="flex justify-center gap-x-[4rem] mt-[7rem]">
+      {/* <div className="flex justify-center gap-x-[4rem] mt-[7rem]">
         {letter != "A" && (
           <NavButton
             text="Previous"
@@ -191,7 +199,28 @@ const Overalltest = () => {
             onClickHandler={nextLetter}
           />
         )}
-      </div>
+      </div> */}
+      {averageAccuracy / attempts.length >= 50 && attempts.length == 3 ? (
+        <div className="flex items-center justify-center">
+          <button className="bg-lime-600 p-4 rounded-lg text-white shadow-md">
+            Great going!
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
+      {averageAccuracy / attempts.length < 50 && attempts.length == 3 ? (
+        <div className="flex items-center justify-center">
+          <button
+            onClick={improvisationNeeded}
+            className="bg-blue-600 p-4 rounded-lg text-white shadow-md"
+          >
+            You need to practice more!
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
