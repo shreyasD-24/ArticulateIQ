@@ -9,8 +9,8 @@ import os
 from groq import Groq
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
-load_dotenv()
-GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+# load_dotenv()
+# GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 COUPLED = ""
 SOUND_REFERENCE = {
     'S': 'SH',
@@ -133,66 +133,68 @@ def check(word_given, word_recieved, check_for):
 #     )
 #     print(transcription.text)
       
-@app.route('/record', methods=["GET"])
-def record():
-    chunk = 1024
-    sample_format = pyaudio.paInt16  # 16 bits per sample
-    channels = 2
-    fs = 44100  
-    seconds = 5
-    filename = "output.wav"
+# @app.route('/record', methods=["GET"])
+# def record():
+#     chunk = 1024
+#     sample_format = pyaudio.paInt16  # 16 bits per sample
+#     channels = 2
+#     fs = 44100  
+#     seconds = 5
+#     filename = "output.wav"
 
-    p = pyaudio.PyAudio()
+#     p = pyaudio.PyAudio()
 
-    print('Recording')
+#     print('Recording')
 
-    stream = p.open(format=sample_format,
-                    channels=channels,
-                    rate=fs,
-                    frames_per_buffer=chunk,
-                    input=True)
+#     stream = p.open(format=sample_format,
+#                     channels=channels,
+#                     rate=fs,
+#                     frames_per_buffer=chunk,
+#                     input=True)
 
-    frames = []  # Initialize array to store frames
-
-    
-    for i in range(0, int(fs / chunk * seconds)):
-        data = stream.read(chunk)
-        frames.append(data)
+#     frames = []  # Initialize array to store frames
 
     
-    stream.stop_stream()
-    stream.close()
-    
-    p.terminate()
-
-    print('Finished recording')
-
-    # Save the recorded data as a WAV file
-    wf = wave.open(filename, 'wb')
-    wf.setnchannels(channels)
-    wf.setsampwidth(p.get_sample_size(sample_format))
-    wf.setframerate(fs)
-    wf.writeframes(b''.join(frames))
-    wf.close()
+#     for i in range(0, int(fs / chunk * seconds)):
+#         data = stream.read(chunk)
+#         frames.append(data)
 
     
-    client = Groq(api_key=GROQ_API_KEY)
+#     stream.stop_stream()
+#     stream.close()
+    
+#     p.terminate()
 
-    with open("output.wav", "rb") as file:
-        transcription = client.audio.transcriptions.create(
-        file=(filename, file.read()),
-        model="distil-whisper-large-v3-en",
-        response_format="verbose_json",
-        )
-    print(transcription.text)
-    percentage = check(EXAMPLE[COUPLED].upper(), transcription.text.upper(), COUPLED.upper())
+#     print('Finished recording')
 
-    print(percentage)
-    word_percentage = {
-        "transcript": transcription.text,
-        "percentage": percentage
-    }
-    return jsonify(word_percentage)
+#     # Save the recorded data as a WAV file
+#     wf = wave.open(filename, 'wb')
+#     wf.setnchannels(channels)
+#     wf.setsampwidth(p.get_sample_size(sample_format))
+#     wf.setframerate(fs)
+#     wf.writeframes(b''.join(frames))
+#     wf.close()
+
+    
+#     # client = Groq(api_key=GROQ_API_KEY)
+
+#     with open("output.wav", "rb") as file:
+#         transcription = client.audio.transcriptions.create(
+#         file=(filename, file.read()),
+#         model="distil-whisper-large-v3-en",
+#         response_format="verbose_json",
+#         )
+#     print(transcription.text)
+#     percentage = check(EXAMPLE[COUPLED].upper(), transcription.text.upper(), COUPLED.upper())
+
+#     print(percentage)
+#     word_percentage = {
+#         "transcript": transcription.text,
+#         "percentage": percentage
+#     }
+#     return jsonify(word_percentage)
+
+
 
 @app.route("/remedy/<int:averagePercentage>", methods=["GET", "POST"])
 def remedy(averagePercentage):

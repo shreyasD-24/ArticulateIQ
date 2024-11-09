@@ -15,8 +15,8 @@ export default function CourseModal({
   };
   return (
     <div>
-      <div className="bg-[#F5F0F0] w-[800px] gap-8 flex items-center justify-center p-8 rounded-xl shadow-xl">
-        <div className="bg-[#E5D1FF] p-6 rounded-xl">
+      <div className="bg-[#f7e9d0] w-[800px] gap-8 flex items-center justify-center p-8 rounded-xl shadow-xl">
+        <div className="bg-[#f7d98d] p-6 rounded-xl">
           <img src={learningphonemechar} alt="learningphonemechar" />
         </div>
         <div className="flex gap-20 justify-between items-center">
@@ -41,7 +41,7 @@ export default function CourseModal({
               style={{ backgroundColor: Color }}
               className="p-2 rounded-lg"
             >
-              <button className="font-spacegrotesksemibold text-white text-md">
+              <button className="font-spacegrotesksemibold   text-md">
                 {Status} <span>→</span>
               </button>
             </div>
