@@ -1,9 +1,10 @@
 import streamlit as st
 from groq import Groq
-from apiKey import GROQ_API_KEY
+from dotenv import load_dotenv
 import speech_recognition as sr
 import pyttsx3
 import io
+import os
 
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
@@ -14,6 +15,8 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Preformatte
 from reportlab.lib.colors import HexColor
 
 # Initialize the Groq client
+load_dotenv()
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 client = Groq(api_key=GROQ_API_KEY)
 
 # Initialize the text-to-speech engine

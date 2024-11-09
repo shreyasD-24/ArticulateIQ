@@ -1,203 +1,258 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
+# import random
+import pyaudio
+import wave
 from flask_cors import CORS
-from groq import Groq
 from dotenv import load_dotenv
 import os
-import google.generativeai as genai
-import io
-load_dotenv()
+from groq import Groq
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, supports_credentials=True)
+load_dotenv()
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+COUPLED = ""
+SOUND_REFERENCE = {
+    'S': 'SH',
+    'F': 'TH',
+    'L': 'R',
+    'B': 'V',
+    'P': 'F',
+    'T': 'D',
+    'A': 'E',  # Added
+    'Z': 'S'   # Added
+}
 
-groq_api_key = os.getenv("GROQ_API_KEY")
-client = Groq(api_key=groq_api_key)
-# Configure your Google Generative AI API key
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+IMAGE ={
+     'A' : 'https://png.pngtree.com/png-vector/20231017/ourmid/pngtree-fresh-apple-fruit-red-png-image_10203073.png',
+     "Z" : 'https://pngimg.com/uploads/zebra/zebra_PNG95977.png'
+}
 
-
-expected_auth_message = "hello"
-
-def clean_summary(summary):
-    """Clean the summary text by removing special formatting characters and ensuring proper newlines."""
-    # Remove unwanted characters like asterisks or bullet points
-    cleaned_summary = summary.replace('*', '').replace('•', '').strip()
-    
-    # Ensure proper newlines
-    return "\n".join(line.strip() for line in cleaned_summary.split('\n') if line.strip())
-
-@app.route('/upload', methods=['POST'])
-def upload_and_summarize():
-
-    if 'file' not in request.files:
-        return jsonify({"error": "No file part"}), 400
-
-    file = request.files['file']
-
-    if file.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    if file and file.filename.lower().endswith('.pdf'):
-        try:
-            pdf_bytes = file.read()
-            pdf_stream = io.BytesIO(pdf_bytes)
-
-            sample_file = {
-                "mime_type": "application/pdf",
-                "data": pdf_stream.getvalue()
-            }
-
-        except Exception as e:
-            app.logger.error(f"Error reading in-memory file: {e}")
-            return jsonify({"error": f"Error reading file: {e}"}), 500
-
-        model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-
-        try:
-            response = model.generate_content([sample_file, "Summarize this document in plain text without any special formatting like bold or italic."])
-            summary = response.text
-            cleaned_summary = clean_summary(summary)
-            return jsonify({"summary": cleaned_summary})
-        except Exception as e:
-            app.logger.error(f"Error generating summary: {e}")
-            return jsonify({"error": f"Error generating summary: {e}"}), 500
-
-    return jsonify({"error": "Invalid file format. Only PDFs are allowed."}), 400
-
-def authenticate_request(provided_auth_message):
-    """Authenticate the request by comparing the provided auth message with the expected one."""
-    return provided_auth_message == expected_auth_message
-
-def clean_response_text(text):
-
-    cleaned_text = text.replace("*", "").replace("•", "")
+PRONUNCIATION = {
+    "sunday": "sʌn.deɪ",
+    "free": "friː",
+    "love": "lʌv",
+    "boat": "boʊt",
+    "pen": "pen",
+    "tree": "triː",
+    "apple": "ˈæp.əl",   # Added
+    "ball": "bɔːl",      # This is already included
+    "zebra": "ˈziː.brə"  # Added
+}
 
 
-    cleaned_text = "\n".join([line.strip() for line in cleaned_text.splitlines() if line.strip()])
+LETTERS = ['S', 'F', 'L', 'B', 'P', 'T', 'A', 'Z']  # Added 'A', 'Z'
 
-    return cleaned_text
-
-@app.route('/generate_response', methods=['POST'])
-def generate_response():
-    provided_auth_message = request.json.get('auth_message')
-    user_message = request.json.get('message')
-    chat_history = request.json.get('chat_history')
-
-
-    if not provided_auth_message or not user_message:
-        return jsonify({"error": "Authentication message or user message not provided"}), 400
-
-
-    if not authenticate_request(provided_auth_message):
-        return jsonify({"error": "Unauthorized access"}), 401
+EXAMPLE = {
+    'S': 'sunday',
+    'F': 'free',
+    'L': 'love',
+    'B': 'boat',
+    'B2':'ball',
+    'P': 'pen',
+    'T': 'tree',
+    'A': 'apple',  # Added
+    'Z': 'zebra'   # Added
+}
 
 
-    if chat_history is None:
-        chat_history = []
+REMEDY = {
+    'P': ['Put your lips together to make the sound. Vocal cords don’t vibrate for voiceless sounds.'],
+    'B': ['Put your lips together to make the sound.'],
+    'B2': ['Put your lips together to make the sound.'],
+    'M': ['Put your lips together to make the sound. Air flows through your nose.'],
+    'W': ['Put your lips together and shape your mouth like you are saying "oo".'],
+    'F': ['Place your bottom lip against your upper front teeth. Top teeth may be on your bottom lip.'],
+    'V': ['Place your bottom lip against your upper front teeth. Top teeth may be on your bottom lip.'],
+    'S': ["Keep your teeth close together to make the sound. The ridge right behind your two front teeth is involved. The front of your tongue is used. Vocal cords don’t vibrate for voiceless sounds."],
+    'Z': ['Keep your teeth close together to make the sound. The ridge right behind your two front teeth is involved. The front of your tongue is used.'],
+    'th': ['Place your top teeth on your bottom lip and let your tongue go between your teeth for the sound. The front of your tongue is involved.'],
+    'TH': ['Place your top teeth on your bottom lip and let your tongue go between your teeth for the sound (as in thin). The front of your tongue is involved. The front of your tongue is used.'],
+    'NG': ['Air flows through your nose.'],
+    'SING': ['Air flows through your nose.'],
+    'L': ['The ridge right behind your two front teeth is involved. The front of your tongue is used.'],
+    'T': ["The ridge right behind your two front teeth is involved. The front of your tongue is used. Vocal cords don’t vibrate for voiceless sounds."],
+    'D': ['The ridge right behind your two front teeth is involved. The front of your tongue is used.'],
+    'CH': ['The front-roof of your mouth is the right spot for the sound. The front of your tongue is used.'],
+    'J': ['The front-roof of your mouth is the right spot for the sound. The front of your tongue is used.'],
+    'SH': ['The front-roof of your mouth is the right spot for the sound. The front of your tongue is used.'],
+    'ZH': ['The front-roof of your mouth is the right spot for the sound. The front of your tongue is used.'],
+    'K': ["The back-roof of your mouth is the right spot for the sound. The back of your tongue is used. Vocal cords don’t vibrate for voiceless sounds."],
+    'G': ['The back-roof of your mouth is the right spot for the sound. The back of your tongue is used.'],
+    'R': ['The back-roof of your mouth is the right spot for the sound. The back of your tongue is used.'],
+    'Y': ['The front of your tongue is used.'],
+    'H': ['Your lungs provide the airflow for every sound, especially this one.'],
+    'A': [
+        'Open your mouth wide with your tongue flat at the bottom, as in "apple".',
+        'Open your mouth wide and pull your tongue back slightly, as in "father".'
+    ]  # Added remedies for 'A'
+}
 
 
-    system_message = {
-        "role": "system",
-        "content": (
-            "You are articulateIQ chat assistant present onthe wbesite Your main goal is to handle the responses given by the site visitors so articulate IQ is an innovative web platform dedicated to empower neurodivers individuals by anxiety their communication and pronunciation skills through continuous personalized beach training neurodivers individuals including those with ADHD autism and different types of dyslexia server main feature of their website is there is a phoneme detection and phoneme detection tools it begins with the assessment of user pronunciation skills and detect different phonemes in which user is facing any struggle allowing user to focus on the training path of that particular phone by selecting the phone app for a given phoneme catalog there is also continuous and weekly training program that gives a holistic training approach and with a structured week by week training which gradually improve their pronunciation so my main ask is from you is when a user comes to the editing chat rod and chart with your ask you something you analyze the response and target or give them the different features of the website that align with their charts or the or their problem also there is a 3D articulation models in our website so user can see different models of the different sounds so that it would become easily for the user to see the visual demonstration of the phone that is produced also remedial guidelines is also given along with the groundbreaking feature of our conversational AI bought with helps us to give a conference post along with the pronunciation check it also gave report which helps to the guardians to analyze the different neurodiverse students so add in the conclusion suggest different features be friendly and be natural assistant for articulateIQ"
+
+def check(word_given, word_recieved, check_for):
+        k=0
+        while k<len(word_recieved) and word_recieved[k]==' ':
+             k+=1
+        word_recieved=word_recieved[k:]
+        for i in range(k,len(word_recieved)):
+              if word_recieved[i]=='.' or word_recieved[i]=='\n' or word_recieved[i]==' ' or word_recieved[i]=='' or word_recieved[i]=='!':
+                    word_recieved=word_recieved[0:i]
+                    break
+        print(word_given,word_recieved,check_for)
+        if word_recieved[0:len(SOUND_REFERENCE[check_for])] == SOUND_REFERENCE[check_for]:
+            #print(word_recieved[len(SOUND_REFERENCE[check_for]):],word_given[len(check_for):])
+            if word_recieved[len(SOUND_REFERENCE[check_for]):]==word_given[len(check_for):]:
+
+                 return 20
+            else:
+                 print(word_recieved,word_given)
+                 return 0
+
+            #return [0,REMEDY[check_for]]
+        elif word_recieved[0:len(check_for)]==word_given[0:len(check_for)]:
+            if word_recieved[len(check_for):]==word_given[len(check_for):]:
+                 return 100
+            else:
+                 return 75
+        else:
+            # print('dasd')
+            return 0
+
+
+# import os
+
+
+
+
+# with open(filename, "rb") as file:
+#     transcription = client.audio.transcriptions.create(
+#       file=(filename, file.read()),
+#       model="whisper-large-v3",
+#       response_format="verbose_json",
+#     )
+#     print(transcription.text)
+      
+@app.route('/record', methods=["GET"])
+def record():
+    chunk = 1024  # Record in chunks of 1024 samples
+    sample_format = pyaudio.paInt16  # 16 bits per sample
+    channels = 2
+    fs = 44100  # Record at 44100 samples per second
+    seconds = 5
+    filename = "output.wav"
+
+    p = pyaudio.PyAudio()  # Create an interface to PortAudio
+
+    print('Recording')
+
+    stream = p.open(format=sample_format,
+                    channels=channels,
+                    rate=fs,
+                    frames_per_buffer=chunk,
+                    input=True)
+
+    frames = []  # Initialize array to store frames
+
+    # Store data in chunks for 3 seconds
+    for i in range(0, int(fs / chunk * seconds)):
+        data = stream.read(chunk)
+        frames.append(data)
+
+    # Stop and close the stream
+    stream.stop_stream()
+    stream.close()
+    # Terminate the PortAudio interface
+    p.terminate()
+
+    print('Finished recording')
+
+    # Save the recorded data as a WAV file
+    wf = wave.open(filename, 'wb')
+    wf.setnchannels(channels)
+    wf.setsampwidth(p.get_sample_size(sample_format))
+    wf.setframerate(fs)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+
+    # client = OpenAI(api_key=OPEN_API_KEY)
+    client = Groq(api_key=GROQ_API_KEY)
+
+    # audio_file = open(, "rb")
+    with open("output.wav", "rb") as file:
+        transcription = client.audio.transcriptions.create(
+        file=(filename, file.read()),
+        model="distil-whisper-large-v3-en",
+        response_format="verbose_json",
         )
+    print(transcription.text)
+    percentage = check(EXAMPLE[COUPLED].upper(), transcription.text.upper(), COUPLED.upper())
+
+    print(percentage)
+    word_percentage = {
+        "transcript": transcription.text,
+        "percentage": percentage
     }
+    return jsonify(word_percentage)
 
 
-    messages = [system_message] + chat_history + [
-        {
-            "role": "user",
-            "content": user_message
+@app.route("/remedy/<int:averagePercentage>", methods=["GET", "POST"])
+def remedy(averagePercentage):
+    if (averagePercentage<=50):
+        result = {
+            "remedy":REMEDY[COUPLED]
         }
-    ]
-
-    # Generate response using the Groq client
-    completion = client.chat.completions.create(
-        model="gemma2-9b-it",
-        messages=messages,
-        temperature=1,
-        max_tokens=1024,
-        top_p=1,
-        stream=True,
-        stop=None,
-    )
-
-    response_text = ""
-    for chunk in completion:
-        response_text += chunk.choices[0].delta.content or ""
-
-    cleaned_response = clean_response_text(response_text)
-
-
-
-    return jsonify({
-        "response": cleaned_response
-    })
-
-
-@app.route('/')
-def home():
-    return 'Hi Buddy 🫡, I guess You have to see Documentation (Ask the owner).'
-
-
-@app.route('/generate_response_with_context', methods=['POST'])
-def generate_response_with_context():
-    data = request.json
-
-
-    provided_auth_message = data.get('auth_message')
-    user_message = data.get('message')
-    document_summary = data.get('document_summary')
-    chat_history = data.get('chat_history')
-
-
-    
-
-
-    if not authenticate_request(provided_auth_message):
-        return jsonify({"error": "Unauthorized access"}), 401
-
-
-    messages = [
-        {
-            "role": "system",
-                        "content": (
-                            "You are articulateIQ chat assistant present onthe wbesite Your main goal is to handle the responses given by the site visitors so articulate IQ is an innovative web platform dedicated to empower neurodivers individuals by anxiety their communication and pronunciation skills through continuous personalized beach training neurodivers individuals including those with ADHD autism and different types of dyslexia server main feature of their website is there is a phoneme detection and phoneme detection tools it begins with the assessment of user pronunciation skills and detect different phonemes in which user is facing any struggle allowing user to focus on the training path of that particular phone by selecting the phone app for a given phoneme catalog there is also continuous and weekly training program that gives a holistic training approach and with a structured week by week training which gradually improve their pronunciation so my main ask is from you is when a user comes to the editing chat rod and chart with your ask you something you analyze the response and target or give them the different features of the website that align with their charts or the or their problem also there is a 3D articulation models in our website so user can see different models of the different sounds so that it would become easily for the user to see the visual demonstration of the phone that is produced also remedial guidelines is also given along with the groundbreaking feature of our conversational AI bought with helps us to give a conference post along with the pronunciation check it also gave report which helps to the guardians to analyze the different neurodiverse students so add in the conclusion suggest different features be friendly and be natural assistant for articulateIQ. In addition to this user would also be uploading any medical document or anything else related to their neurodiversity individual so I want to you to analyze it and analyze the summary and give them the features or any of the features present on our website or explain them the features of the website that align with their document summary"
-                        )
-        },
-        {
-            "role": "user",
-            "content": "This is my medical document summary: " + document_summary
+    else:
+        result = {
+            "remedy":""
         }
-    ]
+
+    return jsonify(result)
 
 
-    messages.extend(chat_history)
+@app.route("/test/<lettergiven>")
+def test(lettergiven):
+    print(lettergiven)
+    global COUPLED
+    COUPLED = ""
+    COUPLED = lettergiven
+    if lettergiven=="B":
+         
+        word_data = {
+            "word1": "ball",
+            "letter": 'B',
+            "pronunciation":"bɔːl",
+            "image_link": 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Soccerball.svg/500px-Soccerball.svg.png'
+
+        }
+    else:
+         word_data = {
+        "word1": EXAMPLE[COUPLED],
+        "letter": COUPLED,
+        "pronunciation": PRONUNCIATION[EXAMPLE[COUPLED[0]]],
+        "image_link": IMAGE[COUPLED]
+
+    }
+         
+    print(COUPLED)
+    return jsonify(word_data)
+
+@app.route("/generate_word/<lettergiven>")
+def generate_word(lettergiven):
+    print(lettergiven)
+    global COUPLED
+    COUPLED = ""
+    COUPLED = lettergiven
+
+    word_data = {
+        "word1": EXAMPLE[COUPLED],
+        "letter": COUPLED,
+        "pronunciation": PRONUNCIATION[EXAMPLE[COUPLED[0]]]
+        # "image_link": IMAGE[COUPLED]
+
+    }
+    print(COUPLED)
+    return jsonify(word_data)
 
 
-    messages.append({
-        "role": "user",
-        "content": user_message
-    })
-
-
-    completion = client.chat.completions.create(
-        model="gemma2-9b-it",
-        messages=messages,
-        temperature=1,
-        max_tokens=1024,
-        top_p=1,
-        stream=True,
-        stop=None,
-    )
-
-    response_text = ""
-    for chunk in completion:
-        response_text += chunk.choices[0].delta.content or ""
-
-    cleaned_response = clean_response_text(response_text)
-
-    return jsonify({"response": cleaned_response})
-
-
-if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
