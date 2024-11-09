@@ -194,3 +194,34 @@ def record():
     }
     return jsonify(word_percentage)
 
+
+@app.route("/generate_word/<lettergiven>")
+def generate_word(lettergiven):
+    print(lettergiven)
+    global COUPLED
+    COUPLED = ""
+    COUPLED = lettergiven
+
+    word_data = {
+        "word1": EXAMPLE[COUPLED],
+        "letter": COUPLED,
+        "pronunciation": PRONUNCIATION[EXAMPLE[COUPLED[0]]]
+        # "image_link": IMAGE[COUPLED]
+
+    }
+    print(COUPLED)
+    return jsonify(word_data)
+
+
+@app.route("/remedy/<int:averagePercentage>", methods=["GET", "POST"])
+def remedy(averagePercentage):
+    if (averagePercentage<=50):
+        result = {
+            "remedy":REMEDY[COUPLED]
+        }
+    else:
+        result = {
+            "remedy":""
+        }
+
+    return jsonify(result)
