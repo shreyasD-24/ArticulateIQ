@@ -121,20 +121,24 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-[#F9AE2B] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
+            <div className="bg-white rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
               <div className="flex items-center justify-center lg:items-start lg:justify-start md:items-start md:justify-start">
-                <img src={Phonic} alt="" className="lg:h-24 md:h-24 h-14" />
+                <img
+                  src={Phonic}
+                  alt=""
+                  className="lg:h-24 md:h-24 h-14 invert"
+                />
               </div>
-              <div className="font-spacegrotesksemibold text-white mb-2 lg:text-2xl md:text-2xl text-lg text-center lg:text-start md:text-start">
+              <div className="font-spacegrotesksemibold text-black mb-2 lg:text-2xl md:text-2xl text-lg text-center lg:text-start md:text-start">
                 Holistic Phonics Training
               </div>
-              <div className="font-spacegrotesklight text-center lg:text-start md:text-start text-white">
+              <div className="font-spacegrotesklight text-center lg:text-start md:text-start text-black">
                 The software covers the sounds of Hindi in isolation and within
                 different words across all word positions.
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
+            <div className="bg-[#F9AE2B] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
               <div className="flex items-center justify-center lg:items-start lg:justify-start md:items-start md:justify-start">
                 <img
                   src={Progress}
