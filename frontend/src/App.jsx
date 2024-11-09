@@ -8,11 +8,13 @@ import Footer from "./Components/Footer";
 import Detection from "./Pages/Detection"
 import Overalltest from "./Pages/Overalltest";
 import Coursetest from "./Pages/Coursetest";
+import ChatModal from "./Components/ChatModal";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Nav />
+      <ChatModal />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/learning" element={<Learning />} />
