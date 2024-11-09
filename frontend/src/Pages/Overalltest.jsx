@@ -137,7 +137,7 @@ const Overalltest = () => {
             style={
               typeof attempts[0] != "undefined"
                 ? attempts[0] >= 50
-                  ? { backgroundColor: "#89D85D" }
+                  ? { backgroundColor: "#409CB5" }
                   : { backgroundColor: "#D86C5D" }
                 : { backgroundColor: "#E3E2E7", color: "black" }
             }
@@ -151,7 +151,7 @@ const Overalltest = () => {
             style={
               typeof attempts[1] != "undefined"
                 ? attempts[1] >= 50
-                  ? { backgroundColor: "#89D85D" }
+                  ? { backgroundColor: "#409CB5" }
                   : { backgroundColor: "#D86C5D" }
                 : { backgroundColor: "#E3E2E7", color: "black" }
             }
@@ -165,7 +165,7 @@ const Overalltest = () => {
             style={
               typeof attempts[2] != "undefined"
                 ? attempts[2] >= 50
-                  ? { backgroundColor: "#89D85D" }
+                  ? { backgroundColor: "#409CB5" }
                   : { backgroundColor: "#D86C5D" }
                 : { backgroundColor: "#E3E2E7", color: "black" }
             }
