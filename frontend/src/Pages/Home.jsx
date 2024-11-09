@@ -1,4 +1,4 @@
-import Mic from "../assets/Mic.png";
+import Mic from "../assets/announcement.svg";
 import Engaging from "../assets/engaging_interface.png";
 import Progress from "../assets/progress_tracking.png";
 import Phonic from "../assets/holistic_phonic_training.png";
@@ -30,7 +30,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-[#FEFBEA] pt-12">
+    <div className="bg-[#FEFBEA]">
       <div className="lg:grid-cols-2 grid grid-cols-1">
         <div className="flex flex-col lg:pl-20 justify-center">
           <div>
@@ -53,7 +53,7 @@ export default function Home() {
               </span>
               <span>with AI Expertise</span>
             </div>
-            <div className="lg:hidden flex justify-center mt-10">
+            <div className="lg:hidden flex justify-center mt-5">
               <img src={Mic} />
             </div>
             <div className="lg:text-xl md:text-xl text-lg font-spacegroteskregular my-10 text-center lg:text-start p-1 lg:p-0">
