@@ -57,7 +57,7 @@ export default function Home() {
               <img src={Mic} />
             </div>
             <div className="lg:text-xl md:text-xl text-lg font-spacegroteskregular my-10 text-center lg:text-start p-1 lg:p-0">
-              Our goal is to empower individuals with neurodiverse challenges.
+              Our goal is to empower individuals with cognitive challenges.
               Unlock your potential through personalized speech training.
             </div>
           </div>
