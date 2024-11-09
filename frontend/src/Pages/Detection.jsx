@@ -18,6 +18,7 @@ export default function Articles() {
   const letter = getSavedData();
   const { user, isAuthenticated, isLoading } = useAuth0();
   console.log(letter[letter.length - 1]);
+  const { loginWithRedirect } = useAuth0();
 
   // Extract percentage from URLs
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Articles() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/");
+      loginWithRedirect();
     }
   }, [isAuthenticated]);
 

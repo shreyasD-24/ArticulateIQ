@@ -19,9 +19,10 @@ const Overalltest = () => {
 
   const navigate = useNavigate();
   const { user, isAuthenticated, isLoading } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/");
+      loginWithRedirect();
     }
   }, [isAuthenticated]);
 

@@ -22,6 +22,7 @@ const Overalltest = ({ articleProp }) => {
   let averageAccuracy = 0;
   let [image, setImage] = useState("");
   let [recording, setRecording] = useState(false);
+  const { loginWithRedirect } = useAuth0();
 
   const improvisationNeeded = () => {
     let average = Math.round(averageAccuracy / attempts.length);
@@ -31,7 +32,7 @@ const Overalltest = ({ articleProp }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/");
+      loginWithRedirect();
     }
   }, [isAuthenticated]);
 
