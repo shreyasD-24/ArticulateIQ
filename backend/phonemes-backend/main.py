@@ -194,6 +194,46 @@ def record():
     }
     return jsonify(word_percentage)
 
+@app.route("/remedy/<int:averagePercentage>", methods=["GET", "POST"])
+def remedy(averagePercentage):
+    if (averagePercentage<=50):
+        result = {
+            "remedy":REMEDY[COUPLED]
+        }
+    else:
+        result = {
+            "remedy":""
+        }
+
+    return jsonify(result)
+
+
+@app.route("/test/<lettergiven>")
+def test(lettergiven):
+    print(lettergiven)
+    global COUPLED
+    COUPLED = ""
+    COUPLED = lettergiven
+    if lettergiven=="B":
+         
+        word_data = {
+            "word1": "ball",
+            "letter": 'B',
+            "pronunciation":"bɔːl",
+            "image_link": 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Soccerball.svg/500px-Soccerball.svg.png'
+
+        }
+    else:
+         word_data = {
+        "word1": EXAMPLE[COUPLED],
+        "letter": COUPLED,
+        "pronunciation": PRONUNCIATION[EXAMPLE[COUPLED[0]]],
+        "image_link": IMAGE[COUPLED]
+
+    }
+         
+    print(COUPLED)
+    return jsonify(word_data)
 
 @app.route("/generate_word/<lettergiven>")
 def generate_word(lettergiven):
@@ -213,15 +253,5 @@ def generate_word(lettergiven):
     return jsonify(word_data)
 
 
-@app.route("/remedy/<int:averagePercentage>", methods=["GET", "POST"])
-def remedy(averagePercentage):
-    if (averagePercentage<=50):
-        result = {
-            "remedy":REMEDY[COUPLED]
-        }
-    else:
-        result = {
-            "remedy":""
-        }
-
-    return jsonify(result)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
