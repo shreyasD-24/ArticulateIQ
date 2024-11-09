@@ -118,7 +118,7 @@ export default function Articles() {
             <div className="font-spacegrotesksemibold border-y-4 border-black font-medium lg:text-2xl md:text-2xl sm:text-xl text-xl w-fit lg:ml-20 ml-2 text-center mt-48">
               Model and Remedies
             </div>
-            <div className="md:flex justify-between items-center m-20 md:mx-80">
+            <div className="lg:flex justify-between m-20 lg:mx-40 ">
               <div className="rounded">
                 {/* Video based on letter */}
                 <video
@@ -154,9 +154,9 @@ export default function Articles() {
           </>
         )}
       </div>
-      <div className="font-spacegrotesksemibold md:flex gap-20 ml-40 mx-20 lg:mx-80 my-10 mb-20">
+      <div className="font-spacegrotesksemibold md:flex gap-20 md:ml-40 mx-20 lg:mx-80 my-10 mb-20">
         <button
-          className="w-[20rem] h-[4rem] bg-[#F9AE2B] mt-10 rounded-lg text-white drop-shadow-[1px_2px_1px_rgba(0,0,0,0.7)] hover:opacity-80 flex justify-center ml-20 items-center"
+          className="w-[20rem] h-[4rem] bg-[#F9AE2B] mt-10 rounded-lg text-white drop-shadow-[1px_2px_1px_rgba(0,0,0,0.7)] hover:opacity-80 flex justify-center md:ml-20 items-center"
           onClick={backtotryagain}
         >
           <div className="mx-1 text-xl">Test Again</div>
