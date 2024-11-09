@@ -22,7 +22,7 @@ export default function Learning() {
     <div>
       <div className="flex justify-center gap-[10%] items-center">
         <div className="flex items-center justify-between">
-          <div className="flex items-center justify-center gap-8 bg-gradient-to-r from-blue-300 to-cyan-100 rounded-2xl p-4 shadow-lg">
+          <div className="flex items-center justify-center gap-8 bg-gradient-to-r from-[#09708C] to-[#409CB5] rounded-2xl p-4 shadow-lg">
             <div className="flex flex-col items-start justify-start gap-4">
               <h2 className="text-2xl font-spacegroteskbold text-gray-800 mb-4">
                 Confused on how to get started?
@@ -32,7 +32,7 @@ export default function Learning() {
               </p>
               <button
                 onClick={overalltest}
-                className="bg-[#89D85D] shadow-lg text-lg hover:bg-opacity-80 font-spacegrotesksemibold py-4 px-4 rounded-lg"
+                className="bg-[#F9AE2B] shadow-lg text-lg hover:bg-opacity-80 font-spacegrotesksemibold py-4 px-4 rounded-lg"
               >
                 Start Test <span className="ml-2">→</span>
               </button>
@@ -63,49 +63,49 @@ export default function Learning() {
               Phoneme2={"V"}
               Status={"Continue Learning"}
               Progress={1}
-              Color={"#2D8CFF"}
+              Color={"#409CB5"}
             />
             <CourseModal
               Phoneme1={"P"}
               Phoneme2={"F"}
               Status={"Completed"}
               Progress={4}
-              Color={"#89D85D"}
+              Color={"#F9AE2B"}
             />
             <CourseModal
               Phoneme1={"T"}
               Phoneme2={"D"}
               Status={"Continue Learning"}
               Progress={1}
-              Color={"#2D8CFF"}
+              Color={"#409CB5"}
             />
             <CourseModal
               Phoneme1={"S"}
               Phoneme2={"Sh"}
               Status={"Continue Learning"}
               Progress={1}
-              Color={"#2D8CFF"}
+              Color={"#409CB5"}
             />
             <CourseModal
               Phoneme1={"F"}
               Phoneme2={"Th"}
               Status={"Continue Learning"}
               Progress={1}
-              Color={"#2D8CFF"}
+              Color={"#409CB5"}
             />
             <CourseModal
               Phoneme1={"L"}
               Phoneme2={"T"}
               Status={"Continue Learning"}
               Progress={1}
-              Color={"#2D8CFF"}
+              Color={"#409CB5"}
             />
           </div>
         </div>
         <div>
-          <div className="bg-[#89D85D] p-6 rounded-lg shadow-lg w-96">
+          <div className="bg-[#F9AE2B] p-6 rounded-lg shadow-lg w-96">
             <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center justify-center bg-[#2D8CFF] p-4 rounded-full">
+              <div className="flex items-center justify-center bg-[#409CB5] p-4 rounded-full">
                 <img src={school} alt="school" />
               </div>
               <div>
@@ -128,7 +128,7 @@ export default function Learning() {
                 <img src={learningchar2} alt="learningchar2" />
               </div>
             </div>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-spacegrotesksemibold py-2 px-8 rounded-full focus:outline-none focus:shadow-outline">
+            <button className="bg-[#409CB5] hover:bg-[#09708C] text-white font-spacegrotesksemibold py-2 px-8 rounded-full focus:outline-none focus:shadow-outline">
               Start
             </button>
           </div>

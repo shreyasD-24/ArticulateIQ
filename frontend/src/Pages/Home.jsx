@@ -36,7 +36,7 @@ export default function Home() {
           <div>
             <div className="lg:text-4xl xl:text-5xl sm:text-3xl text-2xl lg:text-left text-center flex flex-col gap-4 font-spacegrotesksemibold">
               {/* <div>
-                Speak.<span className="text-[#2D8CFF]"> Learn</span>. Thrive
+                Speak.<span className="text-[#F9AE2B]"> Learn</span>. Thrive
               </div>
               <div>
                 Transforming speech, <br />
@@ -44,12 +44,12 @@ export default function Home() {
               </div> */}
               {/* <div>every word</div> */}
               <span>
-                <span className="text-[#2D8CFF]">Speak</span> with Ease, Grow
+                <span className="text-[#409CB5]">Speak</span> with Ease, Grow
                 with
               </span>
               <span>
                 Ease Strengthening{" "}
-                <span className="text-[#2D8CFF]">Voices</span>
+                <span className="text-[#409CB5]">Voices</span>
               </span>
               <span>with AI Expertise</span>
             </div>
@@ -92,7 +92,7 @@ export default function Home() {
         </div>
         <div>
           <div className="flex flex-wrap items-center justify-center gap-8 p-10">
-            <div className="bg-[#2D8CFF] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 sm:w-96 max-w-96">
+            <div className="bg-[#F9AE2B] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 sm:w-96 max-w-96">
               <div className="flex items-center justify-center lg:items-start lg:justify-start md:items-start md:justify-start">
                 <img
                   src={Engaging}
@@ -121,7 +121,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-[#2D8CFF] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
+            <div className="bg-[#F9AE2B] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
               <div className="flex items-center justify-center lg:items-start lg:justify-start md:items-start md:justify-start">
                 <img src={Phonic} alt="" className="lg:h-24 md:h-24 h-14" />
               </div>
@@ -150,7 +150,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-[#2D8CFF] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
+            <div className="bg-[#F9AE2B] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
               <div className="flex items-center justify-center lg:items-start lg:justify-start md:items-start md:justify-start">
                 <img src={Visual} alt="" className="lg:h-24 md:h-24 h-14" />
               </div>
