@@ -6,12 +6,9 @@ import Motor from "../assets/motor_based.png";
 import Visual from "../assets/visual_auditory_stimulation.png";
 import Learning from "../assets/multimodal_learning.png";
 import RealTIme from "../assets/RealTIme.png";
-import imgthree from "../assets/imgthree.png";
-// import Dimensional from "../assets/threeDimensional.png";
-import imgtwo from "../assets/imgtwo.png";
+import Dimensional from "../assets/threeDimensional.png";
 import Illustration from "../assets/Illustration.png";
-// import Contact from "../assets/Contact Us.png";
-import imgone from "../assets/imgone.png";
+import Contact from "../assets/Contact Us.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
@@ -124,24 +121,20 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
+            <div className="bg-[#F9AE2B] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
               <div className="flex items-center justify-center lg:items-start lg:justify-start md:items-start md:justify-start">
-                <img
-                  src={Phonic}
-                  alt=""
-                  className="lg:h-24 md:h-24 h-14 invert"
-                />
+                <img src={Phonic} alt="" className="lg:h-24 md:h-24 h-14" />
               </div>
-              <div className="font-spacegrotesksemibold text-black mb-2 lg:text-2xl md:text-2xl text-lg text-center lg:text-start md:text-start">
+              <div className="font-spacegrotesksemibold text-white mb-2 lg:text-2xl md:text-2xl text-lg text-center lg:text-start md:text-start">
                 Holistic Phonics Training
               </div>
-              <div className="font-spacegrotesklight text-center lg:text-start md:text-start text-black">
+              <div className="font-spacegrotesklight text-center lg:text-start md:text-start text-white">
                 The software covers the sounds of Hindi in isolation and within
                 different words across all word positions.
               </div>
             </div>
 
-            <div className="bg-[#F9AE2B] rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
+            <div className="bg-white rounded-3xl p-6 shadow-2xl lg:h-64 lg:w-96 md:h-64 md:w-96 max-w-96">
               <div className="flex items-center justify-center lg:items-start lg:justify-start md:items-start md:justify-start">
                 <img
                   src={Progress}
@@ -217,20 +210,14 @@ export default function Home() {
               </div>
             </div>
             <div className="hidden lg:flex justify-center">
-              {/* <img src={Dimensional} alt="" className="h-[400px]" /> */}
-              <img src={imgtwo} alt="" className="h-[400px]" />
+              <img src={Dimensional} alt="" className="h-[400px]" />
             </div>
           </div>
 
           <div className="grid lg:grid-cols-2">
             <div className="flex justify-center mt-10 lg:mt-0 md:mt-0">
-              {/* <img
-                src={RealTIme}
-                alt=""
-                className="lg:h-[400px] md:h-[400px] h-[200px]"
-              /> */}
               <img
-                src={imgthree}
+                src={RealTIme}
                 alt=""
                 className="lg:h-[400px] md:h-[400px] h-[200px]"
               />
@@ -288,8 +275,7 @@ export default function Home() {
         <div>
           <div className="grid lg:grid-cols-2 lg:mt-12 md:mt-12">
             <div className="flex justify-center lg:mt-0 md:mt-0 mt-10">
-              {/* <img src={Contact} alt="" className="lg:h-4/5" /> */}
-              <img src={imgone} alt="" className="lg:h-4/5" />
+              <img src={Contact} alt="" className="lg:h-4/5" />
             </div>
 
             <div>
