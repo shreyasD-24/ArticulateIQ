@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/", current: false },
-  { name: "About Us", href: "/about", current: false },
-  { name: "Articles", href: "/articles", current: false },
+  // { name: "About Us", href: "/about", current: false },
+  // { name: "Articles", href: "/articles", current: false },
 ];
 
 function Example() {
@@ -35,11 +35,11 @@ function Example() {
   }, [sidebarRef]);
 
   return (
-    <div>
-      <div className="flex justify-between items-center p-4 mb-12">
+    <div className="bg-[#FEFBEA]">
+      <div className="flex justify-between items-center p-4">
         <div className="font-spacegroteskbold lg:text-3xl md:text-2xl text-2xl ml-4">
           <Link to="/" className="cursor-pointer">
-            EduSync
+            ArticulateIQ
           </Link>
         </div>
         <div className="hidden lg:flex space-x-8 mr-24">

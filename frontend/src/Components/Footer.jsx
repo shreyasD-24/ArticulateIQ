@@ -1,11 +1,11 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-200">
+    <footer className="bg-[#FEFBEA] border border-t-2">
       <div className="container px-4 mx-auto">
         <div className="pt-24 pb-11 mx-auto max-w-4xl lg:items-start lg:justify-start md:items-start md:justify-start flex items-center justify-center flex-col">
           <a className="block md:mx-auto mb-5 max-w-max text-center" href="#">
             <div className="font-spacegroteskbold lg:text-5xl md:text-4xl text-3xl text-left">
-              Edusync
+              ArticulateIQ
             </div>
           </a>
           <div className="flex flex-wrap text-center justify-center w-full">
@@ -55,7 +55,7 @@ const Footer = () => {
       <div className="border-b border-gray-100" />
       <div className="container px-4 mx-auto">
         <p className="py-10 md:pb-20 text-md text-gray-400 font-spacegroteskmedium text-center">
-          Copyright Edusync 2024
+          Copyright ArticulateIQ 2024
         </p>
       </div>
     </footer>

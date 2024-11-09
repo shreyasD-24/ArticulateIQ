@@ -30,25 +30,28 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div className="bg-[#FEFBEA] pt-12">
       <div className="lg:grid-cols-2 grid grid-cols-1">
         <div className="flex flex-col lg:pl-20 justify-center">
           <div>
             <div className="lg:text-4xl xl:text-5xl sm:text-3xl text-2xl lg:text-left text-center flex flex-col gap-4 font-spacegrotesksemibold">
-              <div>
+              {/* <div>
                 Speak.<span className="text-[#2D8CFF]"> Learn</span>. Thrive
               </div>
               <div>
                 Transforming speech, <br />
                 empowering lives with AI.
-              </div>
+              </div> */}
               {/* <div>every word</div> */}
+              <span><span className="text-[#2D8CFF]">Speak</span> with Ease, Grow with </span>
+              <span>Ease Strengthening <span className="text-[#2D8CFF]">Voices</span></span>
+              <span>with AI Expertise</span>
             </div>
             <div className="lg:hidden flex justify-center mt-10">
               <img src={Mic} />
             </div>
             <div className="lg:text-xl md:text-xl text-lg font-spacegroteskregular my-10 text-center lg:text-start p-1 lg:p-0">
-              Our goal is to empower individuals with neurodiverse challenges.
+              Our goal is to empower individuals with cognitive challenges.
               Unlock your potential through personalized speech training.
             </div>
           </div>
