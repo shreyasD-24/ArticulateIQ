@@ -30,7 +30,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-[#FEFBEA]">
+    <div className="bg-[#fff]">
       <div className="lg:grid-cols-2 grid grid-cols-1">
         <div className="flex flex-col lg:pl-20 justify-center">
           <div>
@@ -64,7 +64,7 @@ export default function Home() {
 
           <div className="flex flex-col lg:flex-row sm:flex-row lg:justify-start gap-8 sm:justify-center">
             <div onClick={getstarted} className="flex justify-center">
-              <button className="border rounded-md font-spacegroteskmedium flex items-center justify-center px-12 py-4 bg-[#89D85D] text-black hover:bg-opacity-70 border-black">
+              <button className="border rounded-md font-spacegroteskmedium flex items-center justify-center px-12 py-4 bg-[#F9AE2B] text-black hover:bg-opacity-70 border-black">
                 <p>Get Started</p>
               </button>
             </div>
@@ -249,7 +249,7 @@ export default function Home() {
                 section.
               </div>
               <div className="flex justify-center items-center w-full lg:justify-start">
-                <button className="p-4 bg-[#89D85D] rounded-md font-spacegroteskmedium hover:bg-opacity-90">
+                <button className="p-4 bg-[#F9AE2B] rounded-md font-spacegroteskmedium hover:bg-opacity-90">
                   Read Articles →
                 </button>
               </div>
@@ -322,7 +322,7 @@ export default function Home() {
                       type="text"
                     />
                     <div className="flex justify-items-center">
-                      <button className="bg-[#89D85D] border-[#89D85D] w-full px-4 py-3 m-3 font-spacegrotesksemibold rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95]">
+                      <button className="bg-[#F9AE2B] border-[#F9AE2B] w-full px-4 py-3 m-3 font-spacegrotesksemibold rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95]">
                         Send the message →
                       </button>
                     </div>

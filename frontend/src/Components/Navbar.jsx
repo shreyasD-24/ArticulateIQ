@@ -35,7 +35,7 @@ function Example() {
   }, [sidebarRef]);
 
   return (
-    <div className="bg-[#FEFBEA]">
+    <div className="bg-[#FEFBEA] mb-4">
       <div className="flex justify-between items-center p-4">
         <div className="font-spacegroteskbold lg:text-3xl md:text-2xl text-2xl ml-4">
           <Link to="/" className="cursor-pointer">
