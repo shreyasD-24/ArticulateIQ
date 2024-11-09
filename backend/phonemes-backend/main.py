@@ -2,11 +2,13 @@ from flask import Flask, jsonify
 import pyaudio
 import wave
 
+from groq import Groq  
 import os
 
 app = Flask(__name__)
 
 
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
 @app.route('/record', methods=["GET"])
 def record():
@@ -47,3 +49,15 @@ def record():
     wf.setframerate(fs)
     wf.writeframes(b''.join(frames))
     wf.close()
+
+    
+    client = Groq(api_key=GROQ_API_KEY)
+
+   
+    with open("output.wav", "rb") as file:
+        transcription = client.audio.transcriptions.create(
+        file=(filename, file.read()),
+        model="distil-whisper-large-v3-en",
+        response_format="verbose_json",
+        )
+    print(transcription.text)
