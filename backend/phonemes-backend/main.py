@@ -1,8 +1,7 @@
 from flask import Flask, jsonify
-
+# import random
 import pyaudio
 import wave
-
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
@@ -135,14 +134,14 @@ def check(word_given, word_recieved, check_for):
       
 @app.route('/record', methods=["GET"])
 def record():
-    chunk = 1024
+    chunk = 1024  # Record in chunks of 1024 samples
     sample_format = pyaudio.paInt16  # 16 bits per sample
     channels = 2
-    fs = 44100  
+    fs = 44100  # Record at 44100 samples per second
     seconds = 5
     filename = "output.wav"
 
-    p = pyaudio.PyAudio()
+    p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
     print('Recording')
 
@@ -154,15 +153,15 @@ def record():
 
     frames = []  # Initialize array to store frames
 
-    
+    # Store data in chunks for 3 seconds
     for i in range(0, int(fs / chunk * seconds)):
         data = stream.read(chunk)
         frames.append(data)
 
-    
+    # Stop and close the stream
     stream.stop_stream()
     stream.close()
-    
+    # Terminate the PortAudio interface
     p.terminate()
 
     print('Finished recording')
@@ -175,9 +174,10 @@ def record():
     wf.writeframes(b''.join(frames))
     wf.close()
 
-    
+    # client = OpenAI(api_key=OPEN_API_KEY)
     client = Groq(api_key=GROQ_API_KEY)
 
+    # audio_file = open(, "rb")
     with open("output.wav", "rb") as file:
         transcription = client.audio.transcriptions.create(
         file=(filename, file.read()),
@@ -193,6 +193,7 @@ def record():
         "percentage": percentage
     }
     return jsonify(word_percentage)
+
 
 @app.route("/remedy/<int:averagePercentage>", methods=["GET", "POST"])
 def remedy(averagePercentage):
