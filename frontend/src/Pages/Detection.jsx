@@ -4,10 +4,11 @@ import { getSavedArticle } from "../utils/articleUtils"; // Import the utility f
 import Component from "../assets/Component 35.png";
 import Trophy from "../assets/Trophy.png";
 import char from "../assets/character_de1111a819 1.png";
-import boat from '../assets/boat.mp4';
-import tree from '../assets/tree.mp4';
-import sunday from '../assets/sunday.mp4';
-import {getSavedData} from '../utils/Phenome'
+import boat from "../assets/boat.mp4";
+import tree from "../assets/tree.mp4";
+import sunday from "../assets/sunday.mp4";
+import { getSavedData } from "../utils/Phenome";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Articles() {
   const [percentage, setPercentage] = useState(null);
@@ -15,7 +16,8 @@ export default function Articles() {
   const [videoSrc, setVideoSrc] = useState(boat); // State for video source
   const navigate = useNavigate();
   const letter = getSavedData();
-  console.log(letter[letter.length - 1])
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  console.log(letter[letter.length - 1]);
 
   // Extract percentage from URLs
   useEffect(() => {
@@ -25,6 +27,12 @@ export default function Articles() {
       setPercentage(parseInt(percentageFromUrl[1]));
     }
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
 
   // Fetch remedy based on percentage
   useEffect(() => {
@@ -42,7 +50,7 @@ export default function Articles() {
 
   // Fetch letter and set video source
   useEffect(() => {
-     // Get the saved letter
+    // Get the saved letter
 
     // Determine the video based on the letter
     switch (letter[letter.length - 1].savedLetter.toLowerCase()) {
@@ -69,7 +77,7 @@ export default function Articles() {
     <div>
       <div>
         <div className="border-y-4 font-spacegrotesksemibold border-black font-medium lg:text-2xl md:text-2xl sm:text-xl text-xl w-fit lg:ml-20 ml-2 text-center">
-        Phoneme { letter[letter.length - 1].savedLetter}
+          Phoneme {letter[letter.length - 1].savedLetter}
         </div>
         <div className="font-spacegrotesksemibold border-black font-medium lg:text-2xl md:text-xl sm:text-xl text-xl w-fit lg:ml-20 ml-2 text-center mt-28">
           Test Number : {`2`}

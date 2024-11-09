@@ -3,6 +3,8 @@ import RecordButton from "../Components/RecordButton";
 import Mic from "../Components/Mic";
 import NavButton from "../Components/NavButton";
 import RecordingLoader from "../Components/RecordingLoader";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 
 const baseUrl = "http://localhost:5000";
 
@@ -14,6 +16,14 @@ const Overalltest = () => {
   let [averageAccuracy, setAverageAccuracy] = useState(0);
   let [image, setImage] = useState("");
   let [recording, setRecording] = useState(false);
+
+  const navigate = useNavigate();
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     async function letterCall() {

@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import learningchar1 from "../assets/learningchar1.png";
 import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
@@ -11,6 +12,7 @@ import CourseModal from "../Components/CourseModal";
 import Articlescomponent from "../Components/Articlescomponent";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Learning() {
   // const [value, setValue] = React.useState(dayjs("2024-08-25"));
@@ -18,6 +20,14 @@ export default function Learning() {
   const overalltest = () => {
     navigate("/overall");
   };
+  
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
+
   return (
     <div>
       <div className="flex justify-center gap-[10%] items-center">

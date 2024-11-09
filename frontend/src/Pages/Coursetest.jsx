@@ -6,6 +6,7 @@ import RecordingLoader from "../Components/RecordingLoader";
 import { useNavigate, useParams } from "react-router-dom";
 import { saveArticle, getSavedArticle } from "../utils/articleUtils"; // Import utility functions
 import { saveData } from "../utils/Phenome";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const baseUrl = "http://localhost:5000";
 
@@ -26,6 +27,13 @@ const Overalltest = ({ articleProp }) => {
     let average = Math.round(averageAccuracy / attempts.length);
     navigate("/detect/" + average);
   };
+
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     async function letterCall() {
