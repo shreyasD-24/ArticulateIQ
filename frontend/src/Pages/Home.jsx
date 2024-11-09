@@ -6,9 +6,12 @@ import Motor from "../assets/motor_based.png";
 import Visual from "../assets/visual_auditory_stimulation.png";
 import Learning from "../assets/multimodal_learning.png";
 import RealTIme from "../assets/RealTIme.png";
-import Dimensional from "../assets/threeDimensional.png";
+import imgthree from "../assets/imgthree.png";
+// import Dimensional from "../assets/threeDimensional.png";
+import imgtwo from "../assets/imgtwo.png";
 import Illustration from "../assets/Illustration.png";
-import Contact from "../assets/Contact Us.png";
+// import Contact from "../assets/Contact Us.png";
+import imgone from "../assets/imgone.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
@@ -210,14 +213,20 @@ export default function Home() {
               </div>
             </div>
             <div className="hidden lg:flex justify-center">
-              <img src={Dimensional} alt="" className="h-[400px]" />
+              {/* <img src={Dimensional} alt="" className="h-[400px]" /> */}
+              <img src={imgtwo} alt="" className="h-[400px]" />
             </div>
           </div>
 
           <div className="grid lg:grid-cols-2">
             <div className="flex justify-center mt-10 lg:mt-0 md:mt-0">
-              <img
+              {/* <img
                 src={RealTIme}
+                alt=""
+                className="lg:h-[400px] md:h-[400px] h-[200px]"
+              /> */}
+              <img
+                src={imgthree}
                 alt=""
                 className="lg:h-[400px] md:h-[400px] h-[200px]"
               />
@@ -275,7 +284,8 @@ export default function Home() {
         <div>
           <div className="grid lg:grid-cols-2 lg:mt-12 md:mt-12">
             <div className="flex justify-center lg:mt-0 md:mt-0 mt-10">
-              <img src={Contact} alt="" className="lg:h-4/5" />
+              {/* <img src={Contact} alt="" className="lg:h-4/5" /> */}
+              <img src={imgone} alt="" className="lg:h-4/5" />
             </div>
 
             <div>
