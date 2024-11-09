@@ -30,7 +30,7 @@ export default function Articles() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/login");
+      navigate("/");
     }
   }, [isAuthenticated]);
 
